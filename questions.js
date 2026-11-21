@@ -1,8 +1,8 @@
 // Question bank. Each question: id, type, en/ar title, optional help, options [{v,en,ar}].
-// Types: single, multi (max), scale (pole labels), text, long, palette, font, tone.
+// Types: single, multi (max), scale (pole labels), text, long, palette, font, tone, files (upload to Drive).
 // showIf: {q, in:[...]} shows only when matched; {any:[...]} = OR of conditions.
 window.QUESTIONNAIRE = {
-  version: "2026-11-21b",
+  version: "2026-11-21c",
   sections: [
     {
       id: "start",
@@ -77,7 +77,8 @@ window.QUESTIONNAIRE = {
           { v: "packaging", en: "Packaging, labels or printed items", ar: "تغليف أو ليبلز أو مطبوعات" },
           { v: "guidelines", en: "A brand guide", ar: "دليل للهوية" },
           { v: "nothing", en: "None of these", ar: "ولا حاجة من دول", exclusive: true } ] },
-        { id: "assets_link", type: "text", showIf: { q: "have_assets", in: ["logo_vector", "logo_image", "colours", "fonts", "photos", "packaging", "guidelines"] }, en: "Link to a shared folder with those files (Google Drive, Dropbox)", ar: "لينك فولدر فيه الملفات دي (جوجل درايف أو دروبوكس)", help: { en: "Set the link so anyone with it can view.", ar: "خلّي اللينك متاح لأي حد معاه يشوفه." } },
+        { id: "uploads", type: "files", showIf: { q: "have_assets", in: ["logo_vector", "logo_image", "colours", "fonts", "photos", "packaging", "guidelines"] }, en: "Upload those files", ar: "ارفع الملفات دي", help: { en: "Logos, brand guides, photos or fonts. Up to 20 files, 10 MB each. PNG, JPG, SVG, PDF, AI, EPS, PSD or font files.", ar: "لوجوهات أو دليل الهوية أو صور أو خطوط. لحد ٢٠ ملف، كل ملف لحد ١٠ ميجا. PNG أو JPG أو SVG أو PDF أو AI أو EPS أو PSD أو ملفات خطوط." } },
+        { id: "assets_link", type: "text", showIf: { q: "have_assets", in: ["logo_vector", "logo_image", "colours", "fonts", "photos", "packaging", "guidelines"] }, en: "Files too big? Share a folder link instead (optional)", ar: "الملفات كبيرة؟ ابعت لينك فولدر بدالها (اختياري)", help: { en: "Google Drive or Dropbox, set so anyone with the link can view.", ar: "جوجل درايف أو دروبوكس، وخلّي اللينك متاح لأي حد معاه يشوفه." } },
         { id: "rename_open", type: "single", en: "Would you consider a new name?", ar: "ممكن تفكر في اسم جديد؟", options: [
           { v: "no", en: "No, the name stays", ar: "لا، الاسم ثابت" },
           { v: "maybe", en: "Maybe, if there's a strong reason", ar: "ممكن لو فيه سبب قوي" },
