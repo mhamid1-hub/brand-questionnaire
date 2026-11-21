@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Brand Identity Questionnaire</title>
+<meta name="description" content="A short questionnaire to define a clothing brand's identity. Arabic and English.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300..700&family=Outfit:wght@600&family=Tajawal:wght@500;700&family=Anton&family=Lalezar&family=DM+Serif+Display&family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@600&family=Aref+Ruqaa:wght@700&family=Syne:wght@700&family=Reem+Kufi:wght@400..700&family=Fredoka:wght@600&family=Marhey:wght@400..700&display=swap">
+<style>
+/* Layout: one narrow start-aligned column; a tape-measure progress strip is the only loud element (selvedge red + indigo, from denim). */
+:root {
+  --bg: #EDEFF2;          /* cool unbleached cotton */
+  --surface: #F8F9FB;
+  --ink: #1B2232;         /* indigo-black thread */
+  --muted: #5B6475;
+  --line: #C9CED8;
+  --accent: #2C47A3;      /* raw denim indigo */
+  --accent-soft: #DCE3F6;
+  --selvedge: #B8402E;    /* selvedge red line */
+  --font: "Readex Pro", "Segoe UI", Tahoma, system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11151E; --surface: #181E2A; --ink: #E4E8F0; --muted: #9AA3B5;
+    --line: #2E3647; --accent: #8EA5F2; --accent-soft: #232E4D; --selvedge: #E0765F;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11151E; --surface: #181E2A; --ink: #E4E8F0; --muted: #9AA3B5;
+  --line: #2E3647; --accent: #8EA5F2; --accent-soft: #232E4D; --selvedge: #E0765F;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--font); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+[hidden] { display: none !important; }
+.wrap { max-width: 680px; margin: 0 auto; padding-block: 0 96px; }
+
+/* header */
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 20px 14px; }
+.mark { font-weight: 600; font-size: 15px; letter-spacing: .01em; }
+.lang { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.lang button { font: inherit; font-size: 14px; border: 0; background: transparent; color: var(--muted); padding: 6px 14px; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+
+/* tape measure */
+.tape-wrap { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 8px 12px; }
+.tape {
+  position: relative; height: 34px; border-radius: 3px; overflow: hidden;
+  background: #E9C46A;
+  border-top: 2px solid var(--selvedge);
+}
+.tape::before { /* ticks: small every 6px, big every 30px */
+  content: ""; position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(to right, rgba(27,34,50,.75) 0 1px, transparent 1px 30px) 0 0 / 100% 14px no-repeat,
+    repeating-linear-gradient(to right, rgba(27,34,50,.45) 0 1px, transparent 1px 6px) 0 0 / 100% 7px no-repeat;
+}
+:root[dir="rtl"] .tape::before { transform: scaleX(-1); }
+.tape-fill { position: absolute; inset-block: 0; inset-inline-start: 0; width: 0; background: var(--accent); opacity: .9; transition: width .35s ease; }
+.tape-label {
+  position: absolute; inset-block-end: 4px; inset-inline-end: 8px;
+  font-size: 12px; font-weight: 600; color: #1B2232; font-variant-numeric: tabular-nums;
+  direction: ltr; unicode-bidi: isolate;
+}
+@media (prefers-reduced-motion: reduce) { .tape-fill { transition: none; } }
+
+/* section */
+h1 { font-size: clamp(28px, 6vw, 40px); line-height: 1.15; font-weight: 600; margin: 28px 0 8px; text-wrap: balance; }
+.intro { color: var(--muted); margin: 0 0 8px; max-width: 60ch; }
+.q { padding-block: 26px; border-bottom: 1px solid var(--line); }
+.q:last-of-type { border-bottom: 0; }
+.q-title { font-size: 18px; font-weight: 500; margin: 0 0 4px; text-wrap: balance; }
+.req { color: var(--selvedge); margin-inline-start: 4px; }
+.help { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
+.q-title + .opts, .q-title + input, .q-title + textarea { margin-top: 12px; }
+.err { color: var(--selvedge); font-size: 14px; margin-top: 8px; }
+
+/* options */
+.opts { display: grid; gap: 8px; }
+.opt {
+  display: flex; align-items: flex-start; gap: 12px; width: 100%; text-align: start;
+  font: inherit; color: inherit; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; cursor: pointer;
+}
+.opt:hover { border-color: var(--muted); }
+.opt:focus-visible, .scale button:focus-visible, .lang button:focus-visible, .btn:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.box { flex: none; width: 20px; height: 20px; margin-top: 2px; border: 1.5px solid var(--muted); display: grid; place-items: center; }
+.opt[data-kind="single"] .box { border-radius: 50%; }
+.opt[data-kind="multi"] .box { border-radius: 4px; }
+.opt[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.opt[aria-pressed="true"] .box { border-color: var(--accent); background: var(--accent); }
+.opt[aria-pressed="true"] .box::after { content: ""; width: 8px; height: 8px; background: var(--surface); border-radius: inherit; }
+.opt[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+.opt-body { min-width: 0; display: grid; gap: 8px; flex: 1; }
+
+/* palette */
+.swatches { display: flex; height: 36px; border-radius: 4px; overflow: hidden; border: 1px solid var(--line); }
+.swatches span { flex: 1; }
+.opts.grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 460px) { .opts.grid2 { grid-template-columns: 1fr; } }
+
+/* fonts */
+.spec { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.spec .lat { font-size: 28px; line-height: 1.1; }
+.spec .ar { font-size: 30px; line-height: 1.3; direction: rtl; }
+.small { font-size: 14px; color: var(--muted); }
+
+/* tone */
+.post { display: grid; gap: 4px; }
+.post .alt { font-size: 14px; color: var(--muted); }
+
+/* scale */
+.scale { display: grid; gap: 6px; margin-top: 12px; }
+.scale-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.scale button {
+  font: inherit; height: 44px; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  border-radius: 6px; cursor: pointer;
+}
+.scale button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.poles { display: flex; justify-content: space-between; font-size: 14px; color: var(--muted); }
+
+/* text */
+input[type="text"], textarea {
+  width: 100%; font: inherit; color: inherit; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px;
+}
+textarea { min-height: 96px; resize: vertical; }
+
+/* nav */
+.nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 32px; }
+.btn { font: inherit; font-weight: 500; padding: 13px 22px; border-radius: 6px; cursor: pointer; border: 1px solid var(--ink); }
+.btn.primary { background: var(--ink); color: var(--bg); }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn[disabled] { opacity: .5; cursor: wait; }
+.done { padding-block: 40px; }
+.done p { max-width: 55ch; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.foot { color: var(--muted); font-size: 13px; margin-top: 40px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="mark" id="mark"></div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="ar" lang="ar">عربي</button>
+      <button type="button" data-lang="en" lang="en">English</button>
+    </div>
+  </header>
+  <div class="tape-wrap" aria-hidden="true">
+    <div class="tape"><div class="tape-fill" id="tapeFill"></div><div class="tape-label" id="tapeLabel"></div></div>
+  </div>
+  <main id="app"></main>
+  <p class="foot" id="foot"></p>
+</div>
+<script src="questions.js"></script>
+<script>
+// Google Apps Script web app (Sheet "Brand questionnaire responses"). Redeploy as a new version to keep this URL.
+const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbw3FtMSQxyGMt0uRM4xxfDEmkgf0LBgXqf_QXeV0fCdPZCBGe1FKtfbRYJTf0zuOZpx/exec";
+
+const Q = window.QUESTIONNAIRE;
+const T = {
+  en: { mark: "Brand Identity Questionnaire", next: "Next", back: "Back", submit: "Send answers", sending: "Sending…",
+        of: (a, b) => `${a} / ${b}`, required: "Please answer this one.", pickMax: n => `You can pick up to ${n}.`,
+        doneH: "Thank you. Your answers are in.", doneP: "We'll go through them and come back to you with the brand direction.",
+        failed: "Your answers couldn't be sent. Check your connection and press Send again. Nothing is lost.",
+        noUrl: "Sending isn't switched on yet. Your answers are saved on this device.",
+        foot: "Your progress is saved on this device until you send it.", ref: "Reference" },
+  ar: { mark: "استبيان هوية البراند", next: "التالي", back: "رجوع", submit: "إرسال الإجابات", sending: "جاري الإرسال…",
+        of: (a, b) => `${a} / ${b}`, required: "من فضلك جاوب على السؤال ده.", pickMax: n => `ممكن تختار لحد ${n}.`,
+        doneH: "شكراً، إجاباتك وصلت.", doneP: "هنراجعها ونرجعلك باتجاه البراند.",
+        failed: "الإجابات موصلتش. اتأكد من النت ودوس إرسال تاني. مفيش حاجة ضاعت.",
+        noUrl: "الإرسال لسه مش شغال. إجاباتك متسجلة على الجهاز ده.",
+        foot: "تقدمك محفوظ على الجهاز ده لحد ما تبعت.", ref: "رقم المرجع" }
+};
+
+const KEY = "brandq-draft-v2";
+let state = load() || { id: newId(), lang: guessLang(), step: 0, a: {}, sent: false };
+let errors = {};
+
+function newId() { return "BQ-" + Date.now().toString(36).toUpperCase() + "-" + Math.random().toString(36).slice(2, 6).toUpperCase(); }
+function guessLang() { return (navigator.language || "").toLowerCase().startsWith("ar") ? "ar" : "en"; }
+function load() { try { return JSON.parse(localStorage.getItem(KEY)); } catch { return null; } }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} }
+
+const allQs = Q.sections.flatMap(s => s.questions);
+const byId = Object.fromEntries(allQs.map(q => [q.id, q]));
+const L = () => state.lang;
+const tx = o => o ? (o[L()] ?? o.en) : "";
+
+function matches(cond) {
+  if (!cond) return true;
+  if (cond.any) return cond.any.some(matches);
+  const v = state.a[cond.q];
+  return Array.isArray(v) ? v.some(x => cond.in.includes(x)) : cond.in.includes(v);
+}
+const visibleSections = () => Q.sections.filter(s => matches(s.showIf));
+const visibleQs = s => s.questions.filter(q => matches(q.showIf));
+const optionsOf = q => q.options || byId[q.sameOptionsAs].options;
+
+function el(tag, attrs = {}, ...kids) {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") n.className = v;
+    else if (k.startsWith("on")) n.addEventListener(k.slice(2), v);
+    else if (v !== undefined && v !== null && v !== false) n.setAttribute(k, v === true ? "" : v);
+  }
+  for (const k of kids.flat()) if (k != null) n.append(k.nodeType ? k : document.createTextNode(k));
+  return n;
+}
+
+function setLang(lang) {
+  state.lang = lang; save();
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  document.title = T[lang].mark;
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+  render();
+}
+document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+
+function choose(q, v, kind) {
+  const opts = optionsOf(q);
+  if (kind === "single") state.a[q.id] = state.a[q.id] === v ? undefined : v;
+  else {
+    let cur = Array.isArray(state.a[q.id]) ? [...state.a[q.id]] : [];
+    const o = opts.find(x => x.v === v);
+    if (cur.includes(v)) cur = cur.filter(x => x !== v);
+    else if (o.exclusive) cur = [v];
+    else {
+      cur = cur.filter(x => !opts.find(y => y.v === x)?.exclusive);
+      if (q.max && cur.length >= q.max) return;
+      cur.push(v);
+    }
+    state.a[q.id] = cur;
+  }
+  delete errors[q.id];
+  save(); render(false);
+}
+
+function optionBody(q, o) {
+  const label = el("span", {}, tx(o));
+  if (q.type === "palette") return el("span", { class: "opt-body" }, el("span", { class: "swatches", "aria-hidden": "true" }, o.c.map(c => el("span", { style: `background:${c}` }))), label);
+  if (q.type === "font") return el("span", { class: "opt-body" },
+    el("span", { class: "spec" },
+      el("span", { class: "lat", lang: "en", style: `font-family:'${o.lat}',serif;font-weight:${o.w}` }, "Brand Aa"),
+      el("span", { class: "ar", lang: "ar", style: `font-family:'${o.arf}',serif;font-weight:${o.w >= 600 ? 700 : 400}` }, "براند")),
+    el("span", { class: "small" }, tx(o)));
+  if (q.type === "tone") {
+    const other = L() === "ar" ? "en" : "ar";
+    return el("span", { class: "opt-body post" }, el("span", {}, o[L()]), el("span", { class: "alt", lang: other, dir: other === "ar" ? "rtl" : "ltr" }, o[other]));
+  }
+  return el("span", { class: "opt-body" }, label);
+}
+
+function renderQ(q) {
+  const t = T[L()];
+  const wrap = el("section", { class: "q", id: "q-" + q.id, "aria-labelledby": "t-" + q.id });
+  wrap.append(el("h2", { class: "q-title", id: "t-" + q.id }, tx(q), q.required ? el("span", { class: "req", "aria-hidden": "true" }, "*") : null));
+  if (q.help) wrap.append(el("p", { class: "help" }, tx(q.help)));
+  const val = state.a[q.id];
+
+  if (["single", "multi", "palette", "font", "tone"].includes(q.type)) {
+    const kind = q.type === "multi" ? "multi" : "single";
+    const opts = optionsOf(q);
+    const full = kind === "multi" && q.max && (val || []).length >= q.max;
+    const box = el("div", { class: "opts" + (q.type === "palette" || q.type === "font" ? " grid2" : ""), role: "group", "aria-labelledby": "t-" + q.id });
+    for (const o of opts) {
+      const on = kind === "multi" ? (val || []).includes(o.v) : val === o.v;
+      box.append(el("button", { type: "button", class: "opt", "data-kind": kind, "aria-pressed": String(on),
+        "aria-disabled": full && !on ? "true" : null, onclick: () => choose(q, o.v, kind) },
+        el("span", { class: "box", "aria-hidden": "true" }), optionBody(q, o)));
+    }
+    wrap.append(box);
+  } else if (q.type === "scale") {
+    const row = el("div", { class: "scale-row", role: "group", "aria-labelledby": "t-" + q.id });
+    for (let i = 1; i <= 5; i++) row.append(el("button", { type: "button", "aria-pressed": String(val === i), "aria-label": `${i} / 5`,
+      onclick: () => { state.a[q.id] = val === i ? undefined : i; save(); render(false); } }, String(i)));
+    wrap.append(el("div", { class: "scale" }, row, el("div", { class: "poles" }, el("span", {}, q.poles[L()][0]), el("span", {}, q.poles[L()][1]))));
+  } else {
+    const attrs = { id: "in-" + q.id, "aria-labelledby": "t-" + q.id, maxlength: q.type === "long" ? 1500 : 200,
+      oninput: e => { state.a[q.id] = e.target.value; delete errors[q.id]; save(); } };
+    const input = q.type === "long" ? el("textarea", attrs) : el("input", { type: "text", ...attrs });
+    input.value = val || "";
+    wrap.append(input);
+  }
+  if (errors[q.id]) wrap.append(el("p", { class: "err", role: "alert" }, errors[q.id]));
+  return wrap;
+}
+
+function validate(sec) {
+  errors = {};
+  for (const q of visibleQs(sec)) {
+    const v = state.a[q.id];
+    const empty = v == null || v === "" || (Array.isArray(v) && !v.length) || (typeof v === "string" && !v.trim());
+    if (q.required && empty) errors[q.id] = T[L()].required;
+  }
+  return !Object.keys(errors).length;
+}
+
+function render(scroll = true) {
+  const t = T[L()];
+  document.getElementById("mark").textContent = t.mark;
+  document.getElementById("foot").textContent = t.foot;
+  const app = document.getElementById("app");
+  const secs = visibleSections();
+  state.step = Math.min(state.step, secs.length - 1);
+  const pct = state.sent ? 100 : Math.round((state.step / secs.length) * 100);
+  document.getElementById("tapeFill").style.width = pct + "%";
+  document.getElementById("tapeLabel").textContent = state.sent ? "✓" : t.of(state.step + 1, secs.length);
+
+  app.replaceChildren();
+  if (state.sent) {
+    app.append(el("div", { class: "done" }, el("h1", {}, t.doneH), el("p", {}, t.doneP), el("p", { class: "small" }, `${t.ref}: ${state.id}`)));
+    return;
+  }
+  const sec = secs[state.step];
+  app.append(el("h1", {}, tx({ en: sec.en, ar: sec.ar })));
+  if (sec.introEn) app.append(el("p", { class: "intro" }, L() === "ar" ? sec.introAr : sec.introEn));
+  const form = el("form", { novalidate: true, onsubmit: e => e.preventDefault() });
+  form.append(el("div", { class: "hp", "aria-hidden": "true" }, el("input", { type: "text", id: "website", tabindex: "-1", autocomplete: "off" })));
+  visibleQs(sec).forEach(q => form.append(renderQ(q)));
+  const last = state.step === secs.length - 1;
+  const msg = el("p", { class: "err", id: "sendMsg", role: "status" });
+  const nav = el("div", { class: "nav" },
+    state.step > 0 ? el("button", { type: "button", class: "btn ghost", onclick: () => { state.step--; save(); render(); } }, t.back) : el("span"),
+    el("button", { type: "button", class: "btn primary", id: "nextBtn", onclick: () => {
+      if (!validate(sec)) { render(false); document.querySelector(".err")?.closest(".q")?.scrollIntoView({ block: "center" }); return; }
+      if (last) submit(msg); else { state.step++; save(); render(); }
+    } }, last ? t.submit : t.next));
+  form.append(nav, msg);
+  app.append(form);
+  if (scroll) window.scrollTo({ top: 0 });
+}
+
+async function submit(msg) {
+  const t = T[L()];
+  if (document.getElementById("website").value) return; // honeypot filled: bot
+  if (!SUBMIT_URL) { msg.textContent = t.noUrl; return; }
+  const btn = document.getElementById("nextBtn");
+  btn.disabled = true; btn.textContent = t.sending; msg.textContent = "";
+  // send only answers to questions the respondent could see
+  const visible = visibleSections().flatMap(visibleQs).map(q => q.id);
+  const answers = Object.fromEntries(visible.filter(id => state.a[id] != null && state.a[id] !== "").map(id => [id, state.a[id]]));
+  try {
+    // text/plain body avoids a CORS preflight, which Apps Script can't answer
+    const r = await fetch(SUBMIT_URL, { method: "POST", body: JSON.stringify({ id: state.id, version: Q.version, lang: L(), answers }) });
+    const j = await r.json();
+    if (!j.ok) throw new Error(j.error || "rejected");
+    state.sent = true; save(); render();
+  } catch (e) {
+    btn.disabled = false; btn.textContent = t.submit; msg.textContent = t.failed;
+  }
+}
+
+setLang(state.lang);
+</script>
+</body>
+</html>
